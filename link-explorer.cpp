@@ -1,17 +1,31 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <curl/curl.h>
-#include <fstream>
-#include <regex>
-#include <sstream>
-#include <set>
-#include <algorithm>
-#include <thread>
-#include <mutex>
-#include <chrono>
-#include <atomic>
-#include <queue>
+#include <iostream>        // std::cout, std::cerr, std::cin
+#include <string>          // std::string
+#include <vector>          // std::vector
+#include <set>             // std::set
+#include <regex>           // std::regex, std::regex_match
+#include <thread>          // std::thread, std::this_thread
+#include <mutex>           // std::mutex, std::lock_guard
+#include <atomic>          // std::atomic
+#include <fstream>         // std::ofstream
+#include <chrono>          // std::chrono::milliseconds, sleep_for
+
+#include <curl/curl.h>     // libcurl (external library for HTTP requests)
+
+// Added correct headers to reduce size of executable 5/2025
+// This needs a minimum of C++11 and libcurl installed and -pthread
+// This program crawls a given URL and its permutations, extracts links from the HTML content,
+// checks if the links are reachable, and saves them to a file if desired.
+// It uses multithreading to speed up the crawling process and respects the robots.txt file.
+// The program also includes a simple command-line interface for user interaction.
+// The program is designed to be run from the command line with the following arguments:
+// <url> <maxThreads> <delay> <depth>
+// <url> - The base URL to crawl (e.g., example.com)
+// <maxThreads> - The maximum number of threads to use for crawling
+// <delay> - The delay in milliseconds between requests
+// <depth> - The depth of crawling (not implemented in this version)
+// The program uses the libcurl library for HTTP requests and regex for link extraction.
+// The program is designed to be portable and should work on most platforms with C++11 support.
+// Compile with: g++ -std=c++11 -o link-explorer link-explorer.cpp -lcurl -lpthread
 
 // Function prototypes
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp);
